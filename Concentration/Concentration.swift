@@ -25,6 +25,7 @@ class Concentration {
             // in creating pairs of the same shape
             // to check it print(card.identifier)
         }
+        cards.shuffle()
         // TODO: Shuffle the cards
     }
 
