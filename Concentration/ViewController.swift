@@ -33,8 +33,15 @@ class ViewController: UIViewController {
     var emojiChoices = ["😃", "😄", "😇", "😍", "😉", "😎", "🙀", "🎃", "👺", "🔥", "🤣", "🐠"]
 
     @IBAction func startNewGame(_ sender: UIButton) {
-
+        self.game = Concentration(numberOfPairsOfCard: (cardButtons.count + 1) / 2)
+        self.flipCount = 0
+        for index in cardButtons.indices {
+            let button = cardButtons[index]
+            button.setTitle("", for: UIControl.State.normal)
+            button.backgroundColor = #colorLiteral(red: 1, green: 0.5763723254, blue: 0, alpha: 1)
+        }
     }
+
     @IBAction func touchCard(_ sender: UIButton) {
         flipCount += 1
         if let cardNumber = cardButtons.index(of: sender) {
