@@ -22,20 +22,28 @@ class ViewController: UIViewController {
     var flipCount = 0 {
         didSet {
             // didSet is a property observer
-            flipCountLabel.text = "Flips : \(flipCount)"
+            flipCountLabel.text = "Flips: \(flipCount)"
+        }
+    }
+
+    var score = 0 {
+        didSet {
+            scoreLabel.text = "Score: \(score)"
         }
     }
 
     @IBOutlet weak var flipCountLabel: UILabel!
-
+    @IBOutlet weak var scoreLabel: UILabel!
     @IBOutlet var cardButtons: [UIButton]!
 
     var emojiChoices = Theme().getTheme()
 
     @IBAction func startNewGame(_ sender: UIButton) {
-        setEmojiChoice()
         self.game = Concentration(numberOfPairsOfCard: (cardButtons.count + 1) / 2)
-        self.flipCount = 0
+        emoji.removeAll()
+        setEmojiChoice()
+        flipCount = game.flipCount
+        score = game.score
         for index in cardButtons.indices {
             let button = cardButtons[index]
             button.setTitle("", for: UIControl.State.normal)
@@ -44,18 +52,21 @@ class ViewController: UIViewController {
     }
 
     @IBAction func touchCard(_ sender: UIButton) {
-        flipCount += 1
         if let cardNumber = cardButtons.index(of: sender) {
-            game.chooseCard(at: cardNumber)
+            if game.chooseCard(at: cardNumber) {
+                updateViewFromModel()
+            }
+            self.flipCount = game.flipCount
             updateViewFromModel()
         }
     }
 
     func updateViewFromModel() {
+        self.score = self.game.score
         for index in cardButtons.indices {
             let button = cardButtons[index]
             let card = game.cards[index]
-            if card.isFaceUp {
+            if card.isFaceUp, !card.isMatched{
                 button.setTitle(emoji(for: card), for: UIControl.State.normal)
                 button.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
             } else {
@@ -66,8 +77,7 @@ class ViewController: UIViewController {
     }
 
     func setEmojiChoice() {
-        let theme = Theme()
-        self.emojiChoices = theme.getTheme()
+        self.emojiChoices = Theme().getTheme()
     }
 
     func emoji(for card: Card) -> String {
