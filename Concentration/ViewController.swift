@@ -30,9 +30,10 @@ class ViewController: UIViewController {
 
     @IBOutlet var cardButtons: [UIButton]!
 
-    var emojiChoices = ["😃", "😄", "😇", "😍", "😉", "😎", "🙀", "🎃", "👺", "🔥", "🤣", "🐠"]
+    var emojiChoices = Theme().getTheme()
 
     @IBAction func startNewGame(_ sender: UIButton) {
+        setEmojiChoice()
         self.game = Concentration(numberOfPairsOfCard: (cardButtons.count + 1) / 2)
         self.flipCount = 0
         for index in cardButtons.indices {
@@ -62,6 +63,11 @@ class ViewController: UIViewController {
                 button.backgroundColor = card.isMatched ? #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0) : #colorLiteral(red: 1, green: 0.5763723254, blue: 0, alpha: 1)
             }
         }
+    }
+
+    func setEmojiChoice() {
+        let theme = Theme()
+        self.emojiChoices = theme.getTheme()
     }
 
     func emoji(for card: Card) -> String {
