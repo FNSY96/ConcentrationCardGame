@@ -10,7 +10,16 @@ import UIKit
 
 class ViewController: UIViewController {
 
-    lazy var game  = Concentration(numberOfPairsOfCard: (cardButtons.count + 1) / 2)
+    lazy var game  = Concentration(numberOfPairsOfCards: numberOfPairsOfCards)
+
+    // This is called a computed property with a
+    // setter (optional) and getter
+    var numberOfPairsOfCards: Int {
+        get {
+            return (cardButtons.count + 1) / 2
+        }
+    }
+
     // since swift you have to completely intialize
     // the object before using any of its vars
     // cardButtons cannot be used before all variables
@@ -39,7 +48,7 @@ class ViewController: UIViewController {
     var emojiChoices = Theme().getTheme()
 
     @IBAction func startNewGame(_ sender: UIButton) {
-        self.game = Concentration(numberOfPairsOfCard: (cardButtons.count + 1) / 2)
+        self.game = Concentration(numberOfPairsOfCards: (cardButtons.count + 1) / 2)
         emoji.removeAll()
         setEmojiChoice()
         flipCount = game.flipCount
