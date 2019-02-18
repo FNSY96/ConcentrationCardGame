@@ -10,7 +10,7 @@ import UIKit
 
 class ViewController: UIViewController {
 
-    lazy var game  = Concentration(numberOfPairsOfCards: numberOfPairsOfCards)
+    private lazy var game  = Concentration(numberOfPairsOfCards: numberOfPairsOfCards)
 
     // This is called a computed property with a
     // setter (optional) and getter
@@ -27,27 +27,30 @@ class ViewController: UIViewController {
     // which creates a deadlock, to avoid it we add lazy keyword
     // in which means gam e does not get initalized before it is used
 
-    var emoji = Dictionary<Int, String>()
-    var flipCount = 0 {
+    private var emoji = Dictionary<Int, String>()
+
+    // any one can get it but no one can set it
+    // this is the meaning of private(set)
+    private(set) var flipCount = 0 {
         didSet {
             // didSet is a property observer
             flipCountLabel.text = "Flips: \(flipCount)"
         }
     }
 
-    var score = 0 {
+    private var score = 0 {
         didSet {
             scoreLabel.text = "Score: \(score)"
         }
     }
 
-    @IBOutlet weak var flipCountLabel: UILabel!
-    @IBOutlet weak var scoreLabel: UILabel!
-    @IBOutlet var cardButtons: [UIButton]!
+    @IBOutlet private weak var flipCountLabel: UILabel!
+    @IBOutlet private weak var scoreLabel: UILabel!
+    @IBOutlet private var cardButtons: [UIButton]!
 
-    var emojiChoices = Theme().getTheme()
+    private var emojiChoices = Theme().getTheme()
 
-    @IBAction func startNewGame(_ sender: UIButton) {
+    @IBAction private func startNewGame(_ sender: UIButton) {
         self.game = Concentration(numberOfPairsOfCards: (cardButtons.count + 1) / 2)
         emoji.removeAll()
         setEmojiChoice()
@@ -60,7 +63,7 @@ class ViewController: UIViewController {
         }
     }
 
-    @IBAction func touchCard(_ sender: UIButton) {
+    @IBAction private func touchCard(_ sender: UIButton) {
         if let cardNumber = cardButtons.index(of: sender) {
             if game.chooseCard(at: cardNumber) {
                 updateViewFromModel()
@@ -70,7 +73,7 @@ class ViewController: UIViewController {
         }
     }
 
-    func updateViewFromModel() {
+    private func updateViewFromModel() {
         self.score = self.game.score
         for index in cardButtons.indices {
             let button = cardButtons[index]
@@ -85,11 +88,11 @@ class ViewController: UIViewController {
         }
     }
 
-    func setEmojiChoice() {
+    private func setEmojiChoice() {
         self.emojiChoices = Theme().getTheme()
     }
 
-    func emoji(for card: Card) -> String {
+    private func emoji(for card: Card) -> String {
         if emoji[card.identifier] == nil, self.emojiChoices.count > 0{
             let randomIndex = Int(arc4random_uniform(UInt32(emojiChoices.count)))
             emoji[card.identifier] = self.emojiChoices.remove(at: randomIndex)

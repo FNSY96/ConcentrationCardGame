@@ -9,9 +9,9 @@
 import Foundation
 
 class Concentration {
-    var cards = Array<Card>()
+    private(set) var cards = Array<Card>()
 
-    var indexOfOneAndOnlyFaceUpCard: Int? {
+    private var indexOfOneAndOnlyFaceUpCard: Int? {
         get {
             var foundIndex: Int?
             for index in cards.indices {
@@ -36,7 +36,9 @@ class Concentration {
     var flipCount = 0
 
     init(numberOfPairsOfCards: Int) {
+        assert(numberOfPairsOfCards > 0, "Enter a number > 0 as number of pairs")
         Card.identifierFactory = -1
+        // TODO: Card.identifierFactory should be private in Card
         self.score = 0
         self.flipCount = 0
         for identifier in 0..<numberOfPairsOfCards {
@@ -56,6 +58,7 @@ class Concentration {
     }
 
     func chooseCard (at index: Int) -> Bool {
+        assert(cards.indices.contains(index), "Index out of range")
         var isMatched = false
         if !cards[index].isMatched {
             incrementFlips(at: index)
