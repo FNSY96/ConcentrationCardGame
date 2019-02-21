@@ -27,8 +27,7 @@ struct Concentration {
             /* A closure can capture constants and variables from the surrounding context in which it is defined. The closure can then refer to and modify the values of those constants and variables from within its body, even if the original scope that defined the constants and variables no longer exists.
             */
 
-            let faceUpCardIndices = cards.indices.filter({cards[$0].isFaceUp})
-            return faceUpCardIndices.count == 1 ? faceUpCardIndices.first : nil
+            return cards.indices.filter({cards[$0].isFaceUp}).oneAndOnly
         }
 
         set/*(newValue)*/ {
@@ -110,5 +109,15 @@ struct Concentration {
 
     mutating func incrementFlips(at index: Int) {
         flipCount = (!cards[index].isFaceUp) ? flipCount + 1 : flipCount
+    }
+}
+
+// extension keyword permits you to add any functionalities
+// and/or properties to any type EVEN IF YOU DO NOT HAVE
+// THE ORIGINAL CODE OF IT
+// here we extended Collections and added a variable to it
+extension Collection {
+    var oneAndOnly: Element? {
+        return count == 1 ? first : nil
     }
 }
