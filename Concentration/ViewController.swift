@@ -32,20 +32,51 @@ class ViewController: UIViewController {
     // any one can get it but no one can set it
     // this is the meaning of private(set)
     private(set) var flipCount = 0 {
+        // didSet is a property observer
         didSet {
-            // didSet is a property observer
-            flipCountLabel.text = "Flips: \(flipCount)"
+            updateFlipCountLabel()
         }
     }
+
+    private func updateFlipCountLabel() {
+        // attributes is array of desired style for the attributed string
+        let attributes: [NSAttributedString.Key: Any] = [
+            .strokeWidth : 5.0,
+            .strokeColor : #colorLiteral(red: 1, green: 0.5763723254, blue: 0, alpha: 1)
+        ]
+        let attributedString = NSAttributedString(string: "Flips: \(flipCount)", attributes: attributes)
+        flipCountLabel.attributedText = attributedString
+    }
+
+    private func updateScoreLabel() {
+        let attributes: [NSAttributedString.Key: Any] = [
+            .strokeWidth : 5.0,
+            .strokeColor : #colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1)
+        ]
+        let attributedString = NSAttributedString(string: "Score: \(score)", attributes: attributes)
+        scoreLabel.attributedText = attributedString
+    }
+
 
     private var score = 0 {
         didSet {
-            scoreLabel.text = "Score: \(score)"
+            updateScoreLabel()
         }
     }
 
-    @IBOutlet private weak var flipCountLabel: UILabel!
-    @IBOutlet private weak var scoreLabel: UILabel!
+    @IBOutlet private weak var flipCountLabel: UILabel! {
+        // we added didSet here in order to update the string
+        // by the shape we want (as it is attributedString)
+        // once we start the program (once flipCountLabel is set)
+        didSet {
+            self.updateFlipCountLabel()
+        }
+    }
+    @IBOutlet private weak var scoreLabel: UILabel! {
+        didSet {
+            updateScoreLabel()
+        }
+    }
     @IBOutlet private var cardButtons: [UIButton]!
 
     private var emojiChoices = Theme().getTheme()
