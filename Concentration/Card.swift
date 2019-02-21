@@ -10,7 +10,20 @@ import Foundation
 
 // struct has no inheritance
 
-struct Card {
+// Implements hashable protocol/interface
+// to be used as a key in dictionary
+// as dictionaries don't allow keys that
+// don't implement Hashable
+
+struct Card: Hashable {
+
+    var hashValue: Int {
+        return self.identifier
+    }
+    static func == (lhs: Card, rhs: Card) -> Bool {
+        return lhs.identifier == rhs.identifier
+    }
+
     var isFaceUp = false
     var isMatched = false
     var identifier: Int

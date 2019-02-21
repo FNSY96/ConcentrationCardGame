@@ -27,7 +27,7 @@ class ViewController: UIViewController {
     // which creates a deadlock, to avoid it we add lazy keyword
     // in which means gam e does not get initalized before it is used
 
-    private var emoji = Dictionary<Int, String>()
+    private var emoji = Dictionary<Card, String>()
 
     // any one can get it but no one can set it
     // this is the meaning of private(set)
@@ -93,13 +93,13 @@ class ViewController: UIViewController {
     }
 
     private func emoji(for card: Card) -> String {
-        if emoji[card.identifier] == nil, self.emojiChoices.count > 0{
+        if emoji[card] == nil, self.emojiChoices.count > 0{
             let randomIndex = Int(arc4random_uniform(UInt32(emojiChoices.count)))
-            emoji[card.identifier] = self.emojiChoices.remove(at: randomIndex)
+            emoji[card] = self.emojiChoices.remove(at: randomIndex)
         }
 
 //       return self.emoji[card.identifier] == nil ? "?" : self.emoji[card.identifier]!
-        return self.emoji[card.identifier] ?? "?"
+        return self.emoji[card] ?? "?"
         // both are equivalent to each other
         // we add the ! mark because emoji returns an "optional"
         // an optional means if it is there I will return it
