@@ -13,13 +13,22 @@ struct Concentration {
 
     private var indexOfOneAndOnlyFaceUpCard: Int? {
         get {
-            var foundIndex: Int?
-            for index in cards.indices {
-                if cards[index].isFaceUp {
-                    foundIndex = (foundIndex == nil) ? index : nil
-                }
-            }
-            return foundIndex
+            // filter takes a closure, this is like sending a pointer on a function
+            /* Closures are self-contained blocks of functionality that can be passed around and used in your code. Closures in Swift are similar to blocks in C and Objective-C and to lambdas in other programming languages. */
+
+            /* Swift’s closure expressions have a clean, clear style, with optimizations that encourage brief, clutter-free syntax in common scenarios. These optimizations include:
+
+             Inferring parameter and return value types from context
+             Implicit returns from single-expression closures
+             Shorthand argument names
+             Trailing closure syntax
+             */
+
+            /* A closure can capture constants and variables from the surrounding context in which it is defined. The closure can then refer to and modify the values of those constants and variables from within its body, even if the original scope that defined the constants and variables no longer exists.
+            */
+
+            let faceUpCardIndices = cards.indices.filter({cards[$0].isFaceUp})
+            return faceUpCardIndices.count == 1 ? faceUpCardIndices.first : nil
         }
 
         set/*(newValue)*/ {
