@@ -70,7 +70,9 @@ struct Concentration {
             checkPreviouslySeen(at: index);
             
             if let matchIndex = indexOfOneAndOnlyFaceUpCard, matchIndex != index {
-                if cards[matchIndex].identifier == cards[index].identifier {
+                // since cards implement equatable (==)
+                // now we can just put == between any 2
+                if cards[matchIndex] == cards[index] {
                     cards[matchIndex].isMatched = true
                     cards[index].isMatched = true
                     self.score += 2
