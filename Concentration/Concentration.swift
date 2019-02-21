@@ -8,7 +8,7 @@
 
 import Foundation
 
-class Concentration {
+struct Concentration {
     private(set) var cards = Array<Card>()
 
     private var indexOfOneAndOnlyFaceUpCard: Int? {
@@ -57,7 +57,12 @@ class Concentration {
         cards.shuffle()
     }
 
-    func chooseCard (at index: Int) -> Bool {
+    /* From swift documentation
+     Structures and enumerations are value types. By default, the properties of a value type cannot be modified from within its instance methods.
+     However, if you need to modify the properties of your structure or enumeration within a particular method, you can opt in to mutating behavior for that method. The method can then mutate (that is, change) its properties from within the method, and any changes that it makes are written back to the original structure when the method ends. The method can also assign a completely new instance to its implicit self property, and this new instance will replace the existing one when the method ends.
+     */
+
+    mutating func chooseCard (at index: Int) -> Bool {
         assert(cards.indices.contains(index), "Index out of range")
         var isMatched = false
         if !cards[index].isMatched {
@@ -83,7 +88,7 @@ class Concentration {
         return isMatched
     }
 
-    func checkPreviouslySeen(at index: Int) {
+    mutating func checkPreviouslySeen(at index: Int) {
         if !cards[index].isMatched {
             cards[index].countFaceUp += 1
             if cards[index].countFaceUp > 3 {
@@ -92,7 +97,7 @@ class Concentration {
         }
     }
 
-    func incrementFlips(at index: Int) {
+    mutating func incrementFlips(at index: Int) {
         flipCount = (!cards[index].isFaceUp) ? flipCount + 1 : flipCount
     }
 }
